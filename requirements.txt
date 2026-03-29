@@ -1,4 +1,6 @@
 fastapi
 uvicorn
-sqlalchemy
 gunicorn
+supabase
+google-generativeai
+python-dotenv

@@ -1,17 +1,29 @@
-def generate_product_metadata(name, description):
-    # Simulates AI logic without needing an API key
-    return {
-        "primary_category": "Eco-Friendly Goods",
-        "sub_category": "Sustainable Living",
-        "tags": ["reusable", "organic"],
-        "sustainability_score": 5
-    }
+import google.generativeai as genai
+import os
 
-def handle_whatsapp_logic(user_id, message):
-    # Simulates escalation logic (Escalates if 'refund' is in message)
-    should_escalate = "refund" in message.lower()
+# Configure Gemini using the Environment Variable from Render
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+def get_sage_response(user_message):
+    # System Instruction: Tells the AI how to behave
+    chat = model.start_chat(history=[])
+    
+    context_prompt = (
+        "You are Sage, the intelligent assistant for Rayeva Sustainable Commerce. "
+        "Your goal is to help users understand eco-friendly products and sustainable living. "
+        "Keep responses professional, concise, and helpful. "
+        f"User says: {user_message}"
+    )
+    
+    response = chat.send_message(context_prompt)
+    
+    # Escalation Logic: Triggers if specific 'high-priority' words are used
+    priority_keywords = ["refund", "human", "talk to agent", "scam", "complaint"]
+    should_escalate = any(word in user_message.lower() for word in priority_keywords)
+    
     return {
-        "reply": "Thank you for reaching out. We are processing your request.",
+        "reply": response.text,
         "escalate": should_escalate
     }
 
