@@ -2,176 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rayeva AI | Sustainable Commerce</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sage AI | Sustainable Commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Custom CSS Variables & Animations */
         :root {
-            --primary-bg: #101623; /* Deep Slate/Dark Navy */
-            --card-bg: #1A2234;    /* Slightly Lighter Slate for cards */
-            --accent-green: #10B981; /* Emerlad Green */
-            --accent-blue: #3B82F6;  /* Royal Blue */
-            --text-main: #E2E8F0;
-            --text-muted: #94A3B8;
+            --primary-green: #2ecc71;
+            --dark-bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
         }
 
-        /* Essential for full-screen feel on mobile */
-        html, body { height: 100%; overflow: hidden; margin: 0; }
-        
-        body { 
-            background-color: var(--primary-bg);
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background: radial-gradient(circle at top right, #1e293b, var(--dark-bg));
             color: var(--text-main);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex; flex-direction: column; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* --- Chat Structure Fixes --- */
-        #chatDisplay {
-            flex: 1; /* Takes all available height */
-            overflow-y: auto; /* Internal scroll ONLY */
-            scrollbar-width: thin;
-            scrollbar-color: #2D3748 transparent;
-            padding: 1.5rem;
-            display: flex; flex-direction: column; gap: 1rem;
+        /* Header */
+        header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
         }
 
-        /* --- Input Bar Fix (Prevents Leakage) --- */
-        .input-bar {
-            background-color: var(--card-bg);
-            border-top: 1px solid #2D3748;
-            padding: 1rem;
-            display: flex; gap: 0.75rem; align-items: center;
+        header h1 { font-size: 1.5rem; color: var(--primary-green); letter-spacing: 1px; }
+        header p { font-size: 0.8rem; opacity: 0.6; }
+
+        /* Chat Area */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* Basic Fade-In for new messages */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .message-animate { animation: fadeIn 0.3s ease-out; }
-
-        /* --- Mobile Responsiveness Utilities --- */
-        @media (max-width: 640px) {
-            h1 { font-size: 1.75rem !important; }
-            .p-4 { padding: 1rem !important; }
-            .p-6 { padding: 1.25rem !important; }
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .user-msg {
+            align-self: flex-end;
+            background: var(--primary-green);
+            color: #000;
+            border-bottom-right-radius: 2px;
+        }
+
+        .sage-msg {
+            align-self: flex-start;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        input {
+            flex: 1;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        button {
+            background: var(--primary-green);
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        /* Loading Dots */
+        .typing { font-style: italic; opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
-<body class="safe-area-inset">
+<body>
 
-    <header class="p-6 pb-2 text-center border-b border-slate-700/50">
-        <h1 class="text-3xl font-extrabold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent tracking-tight">Rayeva AI</h1>
-        <p class="text-slate-400 text-sm mt-1">Sustainable Commerce Logic Engine</p>
+    <header>
+        <h1>SAGE AI</h1>
+        <p>Sustainable Commerce Expert</p>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center p-4 md:p-6 w-full max-w-2xl mx-auto">
-        
-        <div class="flex-1 w-full bg-[#1A2234] rounded-2xl border border-slate-700/50 shadow-xl flex flex-col overflow-hidden">
-            
-            <div class="p-4 border-b border-slate-700/50 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">💬</span>
-                    <div>
-                        <h2 class="font-semibold text-lg text-white">WhatsApp AI Support</h2>
-                        <div class="flex items-center gap-1.5 text-xs text-green-400">
-                            <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
-                            </span>
-                            Mock AI Live
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="chat-container">
+        <div class="message sage-msg">Hello! I am Sage. Ask me anything about sustainable products or eco-friendly living.</div>
+    </div>
 
-            <div id="chatDisplay">
-                <div class="text-slate-400 text-sm italic text-center message-animate">System: Connection Ready. Try asking about a 'refund' to test escalation.</div>
-            </div>
-
-            <div class="input-bar">
-                <input type="text" id="userInput" placeholder="Type your message..." 
-                    class="flex-1 bg-slate-700 border-none rounded-xl p-3 focus:ring-2 focus:ring-green-500 outline-none placeholder:text-slate-500 text-sm md:text-base">
-                <button onclick="sendMessage()" class="bg-green-600 hover:bg-green-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                    Send <span class="text-xs">▶</span>
-                </button>
-            </div>
-
-        </div>
-    </main>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Ask Sage about sustainability..." onkeypress="handleKey(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
 
     <script>
-        // CHANGE THIS to your Render URL after backend deployment
-        const API_BASE_URL = "https://rayeva-ai-backend.onrender.com";
-
-        const chatDisplay = document.getElementById('chatDisplay');
-        const input = document.getElementById('userInput');
-
-        // Function to create and inject a message bubble
-        function createMessageElement(text, isUser = false, escalationTag = '') {
-            const wrapper = document.createElement('div');
-            wrapper.className = isUser ? "flex justify-end w-full message-animate" : "flex justify-start w-full message-animate";
-
-            const inner = document.createElement('div');
-            // Advanced Tailwind classes for bubble styling
-            inner.className = isUser 
-                ? "bg-blue-600 text-white p-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-md text-sm md:text-base"
-                : "bg-slate-700 text-green-300 p-3 rounded-2xl rounded-bl-sm max-w-[80%] shadow-md text-sm md:text-base border border-slate-600";
-            
-            inner.innerHTML = `${text}${escalationTag}`;
-            wrapper.appendChild(inner);
-            return wrapper;
-        }
+        const API_BASE = "https://sage-ai-nse9.onrender.com";
+        const userId = "portfolio_user_" + Math.floor(Math.random() * 1000); // Unique ID for testing
 
         async function sendMessage() {
+            const input = document.getElementById('userInput');
             const message = input.value.trim();
             if (!message) return;
 
-            // 1. Inject User Message immediately
-            chatDisplay.appendChild(createMessageElement(message, true));
+            // Add user message to UI
+            appendMessage(message, 'user-msg');
             input.value = '';
-            scrollToBottom();
 
-            // 2. Simulate AI "Thinking" state
-            const thinkingElement = createMessageElement('Rayeva is thinking...');
-            chatDisplay.appendChild(thinkingElement);
-            scrollToBottom();
+            // Add loading indicator
+            const loadingId = appendMessage('Sage is thinking...', 'sage-msg typing');
 
             try {
-                // 3. Make the API call
-                const response = await fetch(`${API_BASE_URL}/whatsapp/webhook?user_id=web_user&message=${encodeURIComponent(message)}`, {
+                // Call your LIVE Render backend
+                const response = await fetch(`${API_BASE}/chat?user_id=${userId}&message=${encodeURIComponent(message)}`, {
                     method: 'POST'
                 });
+
                 const data = await response.json();
-
-                // 4. Remove Thinking state and show AI Response
-                thinkingElement.remove();
                 
-                const escalationTag = data.escalate ? '<span class="text-xs text-red-400 block mt-1 font-bold">[ESCALATED TO HUMAN AGENT]</span>' : '';
-                chatDisplay.appendChild(createMessageElement(data.reply, false, escalationTag));
-                
-                scrollToBottom();
+                // Remove loading and add real response
+                document.getElementById(loadingId).remove();
+                appendMessage(data.reply, 'sage-msg');
 
-            } catch (err) {
-                // Handle errors cleanly (like backend being offline)
-                thinkingElement.remove();
-                const errorElement = document.createElement('div');
-                errorElement.className = "text-red-400 text-xs text-center py-2 italic w-full";
-                errorElement.innerText = `Error: Connection to ${API_BASE_URL} failed. Ensure the backend is active.`;
-                chatDisplay.appendChild(errorElement);
-                scrollToBottom();
+                if(data.escalate) {
+                    appendMessage("⚠️ *Priority Alert:* I've flagged this for a human specialist.", "sage-msg");
+                }
+            } catch (error) {
+                document.getElementById(loadingId).innerText = "Connection Error. Is the backend awake?";
             }
         }
 
-        function scrollToBottom() {
-            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        function appendMessage(text, className) {
+            const container = document.getElementById('chat-container');
+            const msgDiv = document.createElement('div');
+            const id = 'msg-' + Date.now();
+            msgDiv.id = id;
+            msgDiv.className = `message ${className}`;
+            msgDiv.innerText = text;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+            return id;
         }
 
-        // Allow sending with 'Enter' key
-        input.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
+        function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
     </script>
 </body>
 </html>
