@@ -3,64 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sage AI | Sustainable Workspace</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sage AI | Sustainable Intelligence</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <div id="login-view" class="flex-center">
-        <div class="glass-card">
-            <h1 class="logo-text">SAGE<span>AI</span></h1>
-            <p>Your Sustainable Intelligence Partner</p>
-            <button class="btn-github" onclick="login()">Get Started with GitHub</button>
-        </div>
-        <footer class="landing-footer">Built by Rohnit Sahu &copy; 2026</footer>
+    <div class="gradient-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <div id="login-view">
+        <nav class="landing-nav">
+            <div class="logo">SAGE<span>AI</span></div>
+            <button class="btn-outline" onclick="login()">Sign In</button>
+        </nav>
+
+        <section class="hero">
+            <div class="badge">v2.0 Now Live</div>
+            <h1>Intelligence for a <span class="text-gradient">Greener Future.</span></h1>
+            <p>The world's first AI-driven sustainability workspace. Track eco-impact, analyze products, and chat with Sage.</p>
+            
+            <div class="hero-btns">
+                <button class="btn-primary" onclick="login()">Start Chatting Free</button>
+                <a href="#features" class="btn-secondary">View Features</a>
+            </div>
+        </section>
+
+        <section id="features" class="features-grid">
+            <div class="f-card">
+                <div class="icon">🌿</div>
+                <h3>Eco-Analysis</h3>
+                <p>Gemini-powered insights into product lifecycles.</p>
+            </div>
+            <div class="f-card">
+                <div class="icon">⚡</div>
+                <h3>Real-time Sync</h3>
+                <p>Your history saved instantly via Supabase.</p>
+            </div>
+            <div class="f-card">
+                <div class="icon">🔒</div>
+                <h3>Secure Auth</h3>
+                <p>Enterprise login via GitHub OAuth.</p>
+            </div>
+        </section>
+
+        <footer>Built by Rohnit Sahu &copy; 2026</footer>
     </div>
 
-    <div id="app-view">
+    <div id="app-view" style="display: none;">
         <aside id="sidebar">
-            <div class="sidebar-header">
-                <button class="btn-new" onclick="startNewChat()">+ New Chat</button>
+            <div class="sidebar-top">
+                <div class="logo">SAGE<span>AI</span></div>
+                <button class="btn-new" onclick="window.location.reload()">+ New Chat</button>
             </div>
-            <div id="history-list" class="history-container">
+            <div class="history-list" id="history-list">
                 </div>
-            <div class="sidebar-footer">
-                <div id="user-info"></div>
-                <button class="btn-icon" onclick="toggleSettings()">⚙️</button>
+            <div class="sidebar-user">
+                <span id="user-tag">User</span>
                 <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
         </aside>
 
         <main id="chat-window">
-            <header class="chat-header">
-                <span id="chat-title">New Conversation</span>
-            </header>
-            
-            <div id="messages-container">
-                </div>
-
-            <div class="input-area">
+            <div id="messages-container"></div>
+            <div class="input-container">
                 <div class="input-wrapper">
-                    <input type="text" id="userInput" placeholder="Ask Sage about eco-impact..." onkeypress="handleEnter(event)">
+                    <input type="text" id="userInput" placeholder="Ask Sage anything..." onkeypress="if(event.key==='Enter') send()">
                     <button id="send-btn" onclick="send()">Send</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="settings-modal" class="modal flex-center">
-        <div class="modal-content">
-            <h3>Settings</h3>
-            <label>AI Personality</label>
-            <select id="ai-tone">
-                <option value="friendly">Friendly Assistant</option>
-                <option value="expert">Environmental Scientist</option>
-            </select>
-            <button class="btn-main" onclick="toggleSettings()">Close</button>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+    <script src="./app.js"></script>
 </body>
 </html>
